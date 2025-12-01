@@ -1,2 +1,2 @@
-lark-parser==1.0.2
+lark-parser==0.12.0
 pytest==7.4.0
