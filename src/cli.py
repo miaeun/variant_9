@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 import sys
 from src import parser as p
 from src import evaluator as ev

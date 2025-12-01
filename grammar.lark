@@ -1,0 +1,56 @@
+?start: program
+
+program: statement*
+statement: const_decl
+         | value_stmt
+
+const_decl: NAME "<-" value                -> const_decl
+
+?value_stmt: value
+
+?value: number
+      | string
+      | array
+      | const_expr
+
+array: "({" [value_list] "})"
+
+value_list: value ("," value)*
+
+
+string : ESCAPED_STRING
+
+const_expr: "^[" expr "]"                  -> const_expr
+
+?expr: expr "+" term   -> add
+     | expr "-" term   -> sub
+     | term
+
+?term: term "*" factor -> mul
+     | term "/" factor -> div
+     | factor
+
+?factor: function_call
+       | "(" expr ")"
+       | atom
+
+function_call: NAME "(" arg_list? ")"
+
+?arg_list: expr ("," expr)*
+
+?atom: number
+     | NAME             -> var_ref
+     | string
+     | array
+
+number: BIN_INT
+
+BIN_INT: /0[bB][01]+/
+
+NAME: /[a-zA-Z]+/
+
+%import common.ESCAPED_STRING
+%import common.WS
+%ignore WS
+
+// comments: multi-line "#= ... =#" must be removed pre-parse
